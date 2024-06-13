@@ -1,0 +1,25 @@
+class CustomError extends Error {
+  constructor(statusCode, message, data = null) {
+    super(message);
+    this.statusCode = statusCode;
+    this.name = this.constructor.name;
+    this.data = data;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+const handleAsync = (asyncFn) => (req, res, next) =>
+  Promise.resolve(asyncFn(req, res, next)).catch((error) => {
+    if (error instanceof CustomError) {
+      return res.status(error.statusCode).json({
+        message: error.message,
+        error: true,
+      });
+    }
+    next(error);
+  });
+
+module.exports = {
+  CustomError,
+  handleAsync,
+};
