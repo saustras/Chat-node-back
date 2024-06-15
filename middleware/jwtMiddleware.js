@@ -4,7 +4,7 @@ const { CustomError } = require('./handlerException');
 const secretKey = process.env.JWT_SECRET;
 
 const verifyToken = (req, res, next) => {
-  const token = req.cookies.token; 
+  const token = req.headers.authorization;
 
   if (!token) {
     throw new CustomError(401, 'Acceso no autorizado');

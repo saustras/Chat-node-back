@@ -13,7 +13,7 @@ const registerUser = handleAsync(async (req, res) => {
 });
 
 const userDetails = handleAsync(async (req, res) => {
-    const token = req.cookies.token || "";
+    const token = req.headers.authorization || "";
     const result = await getUserDetailsService(token);
     return res.status(result.status).json(result);
 });
@@ -25,7 +25,7 @@ const getAllUsers  = handleAsync(async (req, res) => {
 
 const updateUserDetails = handleAsync(async (req, res) => {
   const { name, profile_pic } = req.body;
-  const token = req.cookies.token || "";
+  const token = req.headers.authorization || "";
   const result = await updateUserDetailsService(token, name, profile_pic);
   return res.status(result.status).json(result);
 });
