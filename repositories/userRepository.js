@@ -1,7 +1,20 @@
 const UserModel = require('../models/UserModel');
 
-const findUserByUsername = async (user) => {
-  return await UserModel.findOne({ user });
+const findUserByUsername = async (username) => {
+  return await UserModel.findOne({ username });
+};
+
+const findAllUser = async (search) => {
+  const query = new  RegExp(search,"i","g")
+
+  const user = await UserModel.find({
+    "$or" : [
+      {name: query},
+      {username: query}
+    ]
+  });
+
+  return user
 };
 
 const findUserById = async (id) => {
@@ -21,5 +34,6 @@ module.exports = {
   findUserByUsername,
   createUser,
   findUserById,
-  UpdateUserById
+  UpdateUserById,
+  findAllUser
 };

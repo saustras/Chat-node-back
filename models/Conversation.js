@@ -2,25 +2,22 @@ const { default: mongoose } = require("mongoose");
 
 
 const conversationSchema = new mongoose.Schema({
-
     sender : {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: 'User'
+        type : mongoose.Schema.ObjectId,
+        required : true,
+        ref : 'User'
     },
     receiver : {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: 'User'
+        type : mongoose.Schema.ObjectId,
+        required : true,
+        ref : 'User'
     },
-    message : [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Message'
-    }],
-    profile_pic: {
-        type: String,
-        default : ""
-    }
+    messages : [
+        {
+            type : mongoose.Schema.ObjectId,
+            ref : 'Message'
+        }
+    ]
 }, {
     timestamps : true
 })

@@ -1,6 +1,6 @@
 
 const { handleAsync, CustomError } = require('../middleware/handlerException');
-const { updateUserDetailsService, getUserDetailsService, registerUserService } = require('../services/userService');
+const { updateUserDetailsService, getUserDetailsService, registerUserService, getAllUsersService } = require('../services/userService');
 
 
 const registerUser = handleAsync(async (req, res) => {
@@ -13,8 +13,13 @@ const registerUser = handleAsync(async (req, res) => {
 });
 
 const userDetails = handleAsync(async (req, res) => {
-  const token = req.cookies.token || "";
-  const result = await getUserDetailsService(token);
+    const token = req.cookies.token || "";
+    const result = await getUserDetailsService(token);
+    return res.status(result.status).json(result);
+});
+const getAllUsers  = handleAsync(async (req, res) => {
+  const {search} = req.body;
+  const result = await getAllUsersService(search);
   return res.status(result.status).json(result);
 });
 
@@ -29,6 +34,7 @@ const updateUserDetails = handleAsync(async (req, res) => {
 
 module.exports = {
   registerUser: handleAsync(registerUser),
-  userDetails: handleAsync(userDetails),
-  updateUserDetails: handleAsync(updateUserDetails)
+  userDetails,
+  updateUserDetails: handleAsync(updateUserDetails),
+  getAllUsers: handleAsync(getAllUsers)
 }

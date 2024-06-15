@@ -9,15 +9,14 @@ const generateToken = (payload) => {
 
 };
 
-const getUserDetailsFormToken = async (token) => {
+const getUserDetailsFromToken = async (token) => {
 
     if(!token) {
         return {
-            message: "session out",
+            message: "Sesion terminada",
             logout: true
         }
     }
-
     const decode = await jwt.verify(token,secretKey);
 
     const user = await findUserById(decode.id)
@@ -25,8 +24,22 @@ const getUserDetailsFormToken = async (token) => {
     return user
 }
 
+const hasTokenExpired = (token) => {
+    try {
+      const decoded = jwt.verify(token, secretKey);
+      const currentTime = Math.floor(Date.now() / 1000);
+      return currentTime > decoded.exp;
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        return true; 
+      }
+      throw error; 
+    }
+  };
+
 
   module.exports = {
     generateToken,
-    getUserDetailsFormToken
+    getUserDetailsFromToken,
+    hasTokenExpired
   }
